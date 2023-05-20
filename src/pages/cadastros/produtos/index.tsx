@@ -1,4 +1,4 @@
-import { CadastroProdutos } from 'components'
+import { CadastroEmpresas } from 'components'
 
-export default CadastroProdutos 
+export default CadastroEmpresas 
 

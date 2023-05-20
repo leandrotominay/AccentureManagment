@@ -2,7 +2,7 @@ import { Layout, Input } from 'components';
 import { useState } from 'react';
 
 
-export const CadastroProdutos: React.FC = () => {
+export const CadastroEmpresas: React.FC = () => {
     const [cep, setCep] = useState<string>('');
     const [nomeFantasia, setNomeFantasia] = useState<string>('');
     const [cnpj, setCnpj] = useState<string>('');
