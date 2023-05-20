@@ -1,10 +1,21 @@
-import { Layout } from 'components';
+import { Layout, Input } from 'components';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+
 
 export const CadastroProdutos: React.FC = () => {
-    const [cep, setCep] = useState('');
+    const [cep, setCep] = useState<string>('');
+    const [nomeFantasia, setNomeFantasia] = useState<string>('');
+    const [cnpj, setCnpj] = useState<string>('');
     const [data, setData] = useState(null);
+
+    const submit = () => {
+        const empresa = {
+            nomeFantasia,
+            cnpj,
+            cep
+        }
+        console.log(empresa)
+    }
 
     const handleInputChange = async (e) => {
         const value = e.target.value;
@@ -23,28 +34,31 @@ export const CadastroProdutos: React.FC = () => {
 
     return (
         <Layout titulo="Cadastro de Empresa">
-            <div>
+            
                 <h1>Insira os dados da empresa</h1>
                 <form>
-                    <div className="field">
-                        <label className="label" htmlFor="inputFantasia">Nome Fantasia: *</label>
-                        <div className="control">
-                            <input className="input" id="inputFantasia" type="text" placeholder="Digite o Nome Fantasia"/>
-                        </div>
-                    </div>
-                    <div className="field">
-                        <label className="label">CNPJ</label>
-                        <div className="control">
-                            <input className="input" id="inputCNPJ" type="text" placeholder="Digite o CNPJ"/>
-                        </div>
-                    </div>
-                    <div className="field">
-                        <label className="label">CEP</label>
-                        <div className="control">
-                            <input className="input" ID="inputCEP" type="text" value={cep} onInput={handleInputChange} placeholder="Digite o CEP" />
-                        </div>
+                    <Input label="Nome Fantasia"
+                        onChange={setNomeFantasia}
+                        value={nomeFantasia}
+                        id="inputNomeFantasia"
+                        placeholder="Digite o seu Nome Fantasia"
+                    />
+                    <Input label="CNPJ"
+                        onChange={setCnpj}
+                        value={cnpj}
+                        id="inputCnpj"
+                        placeholder="Digite o CNPJ da Empresa"
+                    />
+                    <Input label="CEP"
+                        onChange={setCep}
+                        onInput={handleInputChange}
+                        value={cep}
+                        id="inputCep"
+                        placeholder="Digite o CEP da Empresa"
+                    />                      
+
                         {data && (
-                            <div>
+                            <div className="Dados CEP">
                                 <label className="label">Endereço</label>
                                 <input type="text" className="input" value={data.logradouro} readOnly />
                                 <label className="label">Bairro</label>
@@ -55,18 +69,18 @@ export const CadastroProdutos: React.FC = () => {
                                 <input type="text" className="input" value={data.uf} readOnly />
                             </div>
                         )}
-                    </div>
+                    
                     <div className="field is-grouped">
                         <div className="control">
-                    <button type="submit" className="button is-dark">Salvar</button>
+                            <button type="submit" onClick={submit} className="button is-dark">Salvar</button>
                         </div>
                         <div className="control">
-                    <button type="submit" className="button">Voltar</button>
+                            <button type="submit" className="button">Voltar</button>
                         </div>
                     </div>
                 </form>
 
-            </div>
+
         </Layout>
     );
 };
