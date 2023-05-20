@@ -11,7 +11,7 @@ const Home: React.FC = () => {
 
       </Head>
 
-      <Layout/>
+      <Layout> </Layout>
 
     </div>
   )
