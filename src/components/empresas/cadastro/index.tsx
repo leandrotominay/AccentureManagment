@@ -1,20 +1,26 @@
 import { Layout, Input } from 'components';
 import { useState } from 'react';
+import { useEmpresaService  } from 'app/services';
+import { Empresa } from 'app/models/empresas';
 
 
 export const CadastroEmpresas: React.FC = () => {
+    const service = useEmpresaService();
     const [cep, setCep] = useState<string>('');
     const [nomeFantasia, setNomeFantasia] = useState<string>('');
     const [cnpj, setCnpj] = useState<string>('');
     const [data, setData] = useState(null);
 
     const submit = () => {
-        const empresa = {
+        const empresa: Empresa = {
             nomeFantasia,
             cnpj,
             cep
         }
-        console.log(empresa)
+
+        service
+        .salvar(empresa)
+        .then(empresaResposta => console.log(empresaResposta))
     }
 
     const handleInputChange = async (e) => {

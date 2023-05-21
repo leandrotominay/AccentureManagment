@@ -1,0 +1,1 @@
+export { useEmpresaService } from './empresa.service'

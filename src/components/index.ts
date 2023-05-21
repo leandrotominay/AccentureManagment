@@ -1,3 +1,3 @@
 export { Layout } from './layout'
-export { CadastroEmpresas } from './produtos'
+export { CadastroEmpresas } from './empresas'
 export { Input } from './commom'
