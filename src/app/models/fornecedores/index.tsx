@@ -3,5 +3,6 @@ export interface Fornecedor {
     nomeFornecedor?: string;
     cnpj?: string;
     cpf?: string;
+    email?: string;
 
 }
