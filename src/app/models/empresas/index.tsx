@@ -1,8 +1,6 @@
 export interface Empresa {
-    id?: number,
+    id?: number;
     nomeFantasia?: string;
     cnpj?: string;
     cep?: string;
 }
-
-const empresa: Empresa = { }

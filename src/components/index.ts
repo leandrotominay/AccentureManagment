@@ -1,3 +1,4 @@
 export { Layout } from './layout'
 export { CadastroEmpresas } from './empresas'
-export { Input } from './commom'
+export { CadastroFornecedores } from './fornecedores'
+export { Input, Message } from './commom'
