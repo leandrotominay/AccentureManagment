@@ -4,12 +4,19 @@ import { useEmpresaService } from 'app/services'
 import { Empresa } from 'app/models/empresas'
 import { Alert } from 'components/common/message'
 import * as yup from 'yup'
+import Link from 'next/link'
 
 const validationSchema = yup.object().shape({
     nomeFantasia: yup.string().trim().required("Campo Obrigatório"),
     cep: yup.string().trim().required("Campo Obrigatório").min(8, "O CEP deve possuir pelo menos 8 digítos.").max(11, "O CEP não pode exceder 11 digítos"),
     cnpj: yup.string().trim().required("Campo Obrigatório").min(10, "O CNPJ deve possuir pelo menos 10 digítos.").max(18, "O CNPJ não pode exceder 18 digitos"),
 })
+
+interface FormErros {
+    nomeFantasia?: string;
+    cnpj?: string;
+    cep?: string;
+}
 
 export const CadastroEmpresas: React.FC = () => {
     const service = useEmpresaService();
@@ -19,6 +26,8 @@ export const CadastroEmpresas: React.FC = () => {
     const [id, setId] = useState<number>();
     const [data, setData] = useState(null);
     const [messages, setMessages] = useState<Array<Alert>>([]);
+    const [errors, setErrors] = useState<FormErros>({});
+
 
 
 
@@ -47,6 +56,7 @@ export const CadastroEmpresas: React.FC = () => {
         }
 
         validationSchema.validate(empresa).then(obj => {
+            setErrors({})
             if (id) {
                 service
                     .atualizar(empresa)
@@ -68,9 +78,9 @@ export const CadastroEmpresas: React.FC = () => {
         }).catch(err => {
             const field = err.path;
             const message = err.message;
-            setMessages([
-                {tipo: "danger", field, texto: message}
-            ])
+            setErrors({
+                [field]: message
+            })
         })
 
     }
@@ -97,6 +107,7 @@ export const CadastroEmpresas: React.FC = () => {
                     value={nomeFantasia}
                     id="inputNomeEmpresa"
                     placeholder="Digite o Nome da Empresa"
+                    error={errors.nomeFantasia}
                 />
 
                 <Input label="CNPJ: "
@@ -105,7 +116,7 @@ export const CadastroEmpresas: React.FC = () => {
                     value={cnpj}
                     id="inputCnpj"
                     placeholder="Digite o CNPJ da Empresa"
-                    maxLength={18}
+                    error={errors.cnpj}
                 />
             </div>
             <hr></hr>
@@ -113,6 +124,9 @@ export const CadastroEmpresas: React.FC = () => {
                 <label className="label">CEP</label>
                 <div className="control">
                     <input className="input" id="inputCEP" type="text" value={cep} onChange={event => setCep(event.target.value)} onInput={handleInputChange} placeholder="Digite o CEP" />
+                {errors.cep &&
+                    <p className="help is-danger">{errors.cep}</p>
+                }
                 </div>
             </div>
             {data && (
@@ -135,7 +149,9 @@ export const CadastroEmpresas: React.FC = () => {
                     </button>
                 </div>
                 <div className="control">
+                    <Link href="/consultas/empresas">
                     <button className="button">Voltar</button>
+                    </Link>
                 </div>
             </div>
 

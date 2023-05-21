@@ -4,14 +4,23 @@ import { useFornecedorService } from 'app/services'
 import { Fornecedor } from 'app/models/fornecedores'
 import { Alert } from 'components/common/message'
 import * as yup from 'yup'
+import Link from 'next/link'
 
 
 const validationSchema = yup.object().shape({
     nomeFornecedor: yup.string().trim().required("Campo obrigatório"),
-    cpf: yup.string().trim().required("Campo obrigatório"),
-    cnpj: yup.string().trim().required("Campo obrigatório"),
+    cpf: yup.string().trim().required("Campo obrigatório").min(11, "O CEP deve possuir pelo menos 11 digítos.").max(14, "O CPF não pode exceder 14 digítos"),
+    cnpj: yup.string().trim().required("Campo obrigatório").min(10, "O CNPJ deve possuir pelo menos 10 digítos.").max(18, "O CNPJ não pode exceder 18 digitos"),
     email: yup.string().trim().required("Campo obrigatório")
 })
+
+interface FormErros {
+    nomeFornecedor?: string;
+    cnpj?: string;
+    cpf?: string;
+    cep?: string;
+    email?: string;
+}
 
 export const CadastroFornecedores: React.FC = () => {
     const service = useFornecedorService();
@@ -21,6 +30,7 @@ export const CadastroFornecedores: React.FC = () => {
     const [email, setEmail] = useState<string>('');
     const [id, setId] = useState<number>();
     const [messages, setMessages] = useState<Array<Alert>>([]);
+    const [errors, setErrors] = useState<FormErros>({});
 
     const submit = () => {
         const fornecedor: Fornecedor = {
@@ -54,9 +64,9 @@ export const CadastroFornecedores: React.FC = () => {
         }).catch(err => {
             const field = err.path;
             const message = err.message;
-            setMessages([
-                { tipo: "danger", field, texto: message }
-            ])
+            setErrors({
+                [field]: message
+            })
         })
 
     }
@@ -82,6 +92,7 @@ export const CadastroFornecedores: React.FC = () => {
                     value={nomeFornecedor}
                     id="inputNomeFornecedor"
                     placeholder="Digite o Nome do Fornecedor"
+                    error={errors.nomeFornecedor}
                 />
 
                 <Input label="CNPJ: "
@@ -90,7 +101,7 @@ export const CadastroFornecedores: React.FC = () => {
                     value={cnpj}
                     id="inputCnpj"
                     placeholder="Digite o CNPJ da Empresa"
-                    maxLength={18}
+                    error={errors.cnpj}
                 />
             </div>
             
@@ -99,12 +110,14 @@ export const CadastroFornecedores: React.FC = () => {
                 value={cpf}
                 id="inputCpf"
                 placeholder="Digite o CPF do Fornecedor"
+                error={errors.cpf}
             />
             <Input label="Email: "
                 onChange={setEmail}
                 value={email}
                 id="inputEmail"
                 placeholder="Digite o E-mail do Fornecedor"
+                error={errors.email}
             />
 
             <br />
@@ -115,7 +128,9 @@ export const CadastroFornecedores: React.FC = () => {
                     </button>
                 </div>
                 <div className="control">
+                <Link href="/consultas/fornecedores">
                     <button className="button">Voltar</button>
+                    </Link>
                 </div>
             </div>
 

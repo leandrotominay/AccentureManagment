@@ -1,4 +1,5 @@
 export { Layout } from './layout'
-export { CadastroEmpresas } from './empresas'
+export { CadastroEmpresas, ListagemEmpresas } from './empresas'
 export { CadastroFornecedores } from './fornecedores'
+export { ListagemFornecedores } from './fornecedores/listagem'
 export { Input, Message } from './common'
