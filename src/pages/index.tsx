@@ -6,7 +6,7 @@ const Home: React.FC = () => {
     <div>
       <Head>
         <title>Accenture Managment</title>
-        <meta name="description" content="Gerenciamento de Empresas e Clientes" />
+        <meta name="description" content="Gerenciamento de Empresas e Fornecedores" />
         <link rel="icon" href="favicon.ico" />
 
       </Head>
