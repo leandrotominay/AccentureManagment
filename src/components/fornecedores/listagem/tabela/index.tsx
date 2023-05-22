@@ -1,18 +1,24 @@
 import { Fornecedor } from 'app/models/fornecedores'
 interface TabelaFornecedorProps {
     fornecedores: Array<Fornecedor>;
+    onEdit: (empresa) => void;
+    onDelete: (empresa) => void;
 }
 
 export const TabelaFornecedores: React.FC<TabelaFornecedorProps> = ({
-    fornecedores
+    fornecedores,
+    onDelete,
+    onEdit
 }) => {
     return (
         <table className="table is-hoverable">
             <thead>
+                <tr>
                 <th>Código</th>
                 <th>Nome</th>
                 <th>CNPJ</th>
                 <th>CEP</th>
+                </tr>
             </thead>
             <tbody>
                 {fornecedores ? (
@@ -29,10 +35,14 @@ export const TabelaFornecedores: React.FC<TabelaFornecedorProps> = ({
 }
 
 interface FornecedorRowProps {
-    fornecedor: Fornecedor
+    fornecedor: Fornecedor;
+    onEdit: (fornecedor) => void;
+    onDelete: (fornecedor) => void;
 }
 const FornecedorRow: React.FC<FornecedorRowProps> = ({
-    fornecedor
+    fornecedor,
+    onDelete,
+    onEdit
 }) => {
     return (
         <tr>
@@ -41,8 +51,8 @@ const FornecedorRow: React.FC<FornecedorRowProps> = ({
             <td>{fornecedor.cpf}</td>
             <td>{fornecedor.cnpj}</td>
             <td>
-                <button className="button is-success">Editar</button>
-                <button className="button is-danger">Editar</button>
+                <button onClick={e => onEdit(fornecedor)} className="button is-success is-rounded is-small">Editar</button>
+                <button onClick={e => onDelete(fornecedor)} className="button is-danger is-rounded is-small">Excluir</button>
 
             </td>
         </tr>

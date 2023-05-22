@@ -1,22 +1,29 @@
 import { Empresa } from 'app/models/empresas'
 interface TabelaEmpresaProps {
     empresas: Array<Empresa>;
+    onEdit: (empresa) => void;
+    onDelete: (empresa) => void;
 }
 
 export const TabelaEmpresas: React.FC<TabelaEmpresaProps> = ({
-    empresas
+    empresas,
+    onDelete,
+    onEdit
 }) => {
     return (
         <table className="table is-hoverable">
             <thead>
+                <tr>
                 <th>Código</th>
                 <th>Nome</th>
                 <th>CNPJ</th>
                 <th>CEP</th>
+                </tr>
             </thead>
             <tbody>
                 {empresas ? (
-                    empresas.map(empresa => <EmpresaRow key={empresa.id} empresa={empresa} />)
+                    empresas.map(empresa => <EmpresaRow onDelete={onDelete}
+                         onEdit={onEdit} key={empresa.id} empresa={empresa} />)
                 ) : (
                     <tr>
                         <td colSpan="...">Nenhuma empresa encontrada</td>
@@ -29,10 +36,14 @@ export const TabelaEmpresas: React.FC<TabelaEmpresaProps> = ({
 }
 
 interface EmpresaRowProps {
-    empresa: Empresa
+    empresa: Empresa;
+    onEdit: (empresa) => void;
+    onDelete: (empresa) => void;
 }
 const EmpresaRow: React.FC<EmpresaRowProps> = ({
-    empresa
+    empresa,
+    onDelete,
+    onEdit
 }) => {
     return (
         <tr>
@@ -41,8 +52,8 @@ const EmpresaRow: React.FC<EmpresaRowProps> = ({
             <td>{empresa.cnpj}</td>
             <td>{empresa.cep}</td>
             <td>
-                <button className="button is-success">Editar</button>
-                <button className="button is-danger">Editar</button>
+                <button onClick={e => onEdit(empresa)} className="button is-success is-rounded is-small">Editar</button>
+                <button onClick={e => onDelete(empresa)}className="button is-danger is-rounded is-small">Excluir</button>
 
             </td>
         </tr>
