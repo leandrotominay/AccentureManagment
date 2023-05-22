@@ -1,10 +1,11 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Layout, Input } from 'components'
 import { useFornecedorService } from 'app/services'
 import { Fornecedor } from 'app/models/fornecedores'
 import { Alert } from 'components/common/message'
 import * as yup from 'yup'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 
 const validationSchema = yup.object().shape({
@@ -31,6 +32,31 @@ export const CadastroFornecedores: React.FC = () => {
     const [id, setId] = useState<number>();
     const [messages, setMessages] = useState<Array<Alert>>([]);
     const [errors, setErrors] = useState<FormErros>({});
+    const router = useRouter()
+    const {id: queryId } = router.query;
+
+    useEffect( () => {        
+        if(queryId){
+            service.carregarFornecedor(queryId).then(fornecedorEncontrado => {
+                if (fornecedorEncontrado.id !== undefined) {
+                    setId(fornecedorEncontrado.id);
+                  }
+                  if (fornecedorEncontrado.nomeFornecedor !== undefined) {
+                    setNomeFornecedor(fornecedorEncontrado.nomeFornecedor);
+                  }
+                  if (fornecedorEncontrado.cnpj !== undefined) {
+                    setCnpj(fornecedorEncontrado.cnpj);
+                  }
+                  if (fornecedorEncontrado.cpf !== undefined) {
+                    setCpf(fornecedorEncontrado.cpf);
+                  }
+                  if (fornecedorEncontrado.email !== undefined) {
+                    setEmail(fornecedorEncontrado.email);
+                  }
+                  
+            })
+        } 
+    } , [ queryId ] )
 
     const submit = () => {
         const fornecedor: Fornecedor = {

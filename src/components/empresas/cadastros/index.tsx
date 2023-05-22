@@ -1,15 +1,16 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Layout, Input, Message } from 'components'
 import { useEmpresaService } from 'app/services'
 import { Empresa } from 'app/models/empresas'
 import { Alert } from 'components/common/message'
 import * as yup from 'yup'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 const validationSchema = yup.object().shape({
     nomeFantasia: yup.string().trim().required("Campo Obrigatório"),
-    cep: yup.string().trim().required("Campo Obrigatório").min(8, "O CEP deve possuir pelo menos 8 digítos.").max(11, "O CEP não pode exceder 11 digítos"),
     cnpj: yup.string().trim().required("Campo Obrigatório").min(10, "O CNPJ deve possuir pelo menos 10 digítos.").max(18, "O CNPJ não pode exceder 18 digitos"),
+    cep: yup.string().trim().required("Campo Obrigatório").min(8, "O CEP deve possuir pelo menos 8 digítos.").max(11, "O CEP não pode exceder 11 digítos")
 })
 
 interface FormErros {
@@ -27,8 +28,8 @@ export const CadastroEmpresas: React.FC = () => {
     const [data, setData] = useState(null);
     const [messages, setMessages] = useState<Array<Alert>>([]);
     const [errors, setErrors] = useState<FormErros>({});
-
-
+    const router = useRouter()
+    const { id: queryId } = router.query;
 
 
     const handleInputChange = async (e) => {
@@ -45,6 +46,27 @@ export const CadastroEmpresas: React.FC = () => {
             console.log(error);
         }
     };
+
+    useEffect(() => {
+        if (queryId) {
+          service.carregarEmpresa(queryId).then((empresaEncontrada) => {
+            if (empresaEncontrada.id !== undefined) {
+              setId(empresaEncontrada.id);
+            }
+            if (empresaEncontrada.nomeFantasia !== undefined) {
+              setNomeFantasia(empresaEncontrada.nomeFantasia);
+            }
+            if (empresaEncontrada.cep !== undefined) {
+              setCnpj(empresaEncontrada.cep); // Alteração nesta linha
+            }
+            if (empresaEncontrada.cnpj !== undefined) {
+              setCep(empresaEncontrada.cnpj); // Alteração nesta linha
+            }
+          });
+        }
+      }, [queryId]);
+      
+      
 
     const submit = () => {
         const empresa: Empresa = {

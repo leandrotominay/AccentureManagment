@@ -16,8 +16,21 @@ export const useEmpresaService = () => {
          await httpClient.put<Empresa>(url, empresa)
      }
 
+     const carregarEmpresa = async (id) : Promise<Empresa> => {
+        const url: string = `${resourceURL}/${id}`
+        const response: AxiosResponse<Empresa> = await httpClient.get(url);
+        return response.data;
+    }
+
+    const deletar = async (id) : Promise<void> => {
+        const url: string = `${resourceURL}/${id}`
+        await httpClient.delete(url)
+    }
+
     return {
         salvar,
-        atualizar
+        atualizar,
+        carregarEmpresa,
+        deletar
     }
 }

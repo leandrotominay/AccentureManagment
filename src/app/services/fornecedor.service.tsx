@@ -16,8 +16,21 @@ export const useFornecedorService = () => {
         await httpClient.put<Fornecedor>(url, fornecedor)
     }
 
+    const carregarFornecedor = async (id) : Promise<Fornecedor> => {
+        const url: string = `${resourceURL}/${id}`
+        const response: AxiosResponse<Fornecedor> = await httpClient.get(url);
+        return response.data;
+     }
+
+    const deletar = async (id) : Promise<void> => {
+        const url: string = `${resourceURL}/${id}`
+        await httpClient.delete(url)
+    }
+
     return {
         salvar,
-        atualizar
+        atualizar,
+        carregarFornecedor,
+        deletar
     }
 }
