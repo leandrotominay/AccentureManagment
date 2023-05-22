@@ -10,8 +10,8 @@ import { useRouter } from 'next/router'
 
 const validationSchema = yup.object().shape({
     nomeFornecedor: yup.string().trim().required("Campo obrigatório"),
-    cpf: yup.string().trim().required("Campo obrigatório").min(11, "O CEP deve possuir pelo menos 11 digítos.").max(14, "O CPF não pode exceder 14 digítos"),
-    cnpj: yup.string().trim().required("Campo obrigatório").min(10, "O CNPJ deve possuir pelo menos 10 digítos.").max(18, "O CNPJ não pode exceder 18 digitos"),
+    cpf: yup.string().trim(),
+    cnpj: yup.string().trim(),
     email: yup.string().trim().required("Campo obrigatório")
 })
 

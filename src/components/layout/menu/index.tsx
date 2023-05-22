@@ -1,3 +1,4 @@
+import { FaHome, FaBuilding, FaUserFriends, FaSignOutAlt } from 'react-icons/fa';
 import Link from 'next/link';
 
 export const Menu: React.FC = () => {
@@ -7,10 +8,10 @@ export const Menu: React.FC = () => {
         <img src="https://www.creativevirtual.com/wp-content/uploads/2021/03/accenture-logo.png" alt="Logo" />
       </p>
       <ul className="menu-list">
-        <MenuItem href="/" aria-haspopup="true" aria-controls="dropdown-menu4" label="Home" />
-        <MenuItem href="/consultas/empresas" label="Empresas" />
-        <MenuItem href="/consultas/fornecedores" label="Fornecedores" />
-        <MenuItem href="/" label="Sair" />
+        <MenuItem href="/" aria-haspopup="true" aria-controls="dropdown-menu4" label="Home" icon={<FaHome />} />
+        <MenuItem href="/consultas/empresas" label="Empresas" icon={<FaBuilding />} />
+        <MenuItem href="/consultas/fornecedores" label="Fornecedores" icon={<FaUserFriends />} />
+        <MenuItem href="/" label="Sair" icon={<FaSignOutAlt />} />
       </ul>
     </aside>
   );
@@ -19,13 +20,17 @@ export const Menu: React.FC = () => {
 interface MenuItemProps {
   href: string;
   label: string;
+  icon: React.ReactNode;
 }
 
 const MenuItem: React.FC<MenuItemProps> = (props: MenuItemProps) => {
   return (
-    <li>
+    <li className="menu-item">
       <Link href={props.href}>
-        <span className="icon"></span> {props.label}
+        
+          <span style={{ display: 'flex' }} className="menu-icon">{props.icon}</span>
+          <span className="menu-label">{props.label}</span>
+        
       </Link>
     </li>
   );
