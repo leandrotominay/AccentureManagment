@@ -7,79 +7,118 @@ interface TabelaFornecedorProps {
   onDelete: (fornecedor: Fornecedor) => void;
 }
 
-export const TabelaFornecedores: React.FC<TabelaFornecedorProps> = ({ fornecedores, onDelete, onEdit }) => {
+export const TabelaFornecedores: React.FC<TabelaFornecedorProps> = ({
+  fornecedores,
+  onDelete,
+  onEdit,
+}) => {
+  const [deletandoId, setDeletandoId] = useState<number | null>(null);
+
+  const onDeleteClick = (fornecedor: Fornecedor) => {
+    if (deletandoId === fornecedor.id) {
+      onDelete(fornecedor);
+      setDeletandoId(null);
+    } else {
+      setDeletandoId(fornecedor.id);
+    }
+  };
+
+  const cancelaDelete = () => setDeletandoId(null);
+
   return (
     <table className="table is-hoverable">
       <thead>
         <tr>
-          <th>Código</th>
+          <th>ID</th>
           <th>Nome</th>
           <th>CNPJ</th>
           <th>CPF</th>
           <th>Email</th>
           <th>RG</th>
           <th>Data de Nascimento</th>
+          <th>Ações</th>
         </tr>
       </thead>
       <tbody>
         {fornecedores.length > 0 ? (
-          fornecedores.map((fornecedor) => (
-            <FornecedorRow key={fornecedor.id} fornecedor={fornecedor} onDelete={onDelete} onEdit={onEdit} />
-          ))
+          fornecedores.map((fornecedor) => {
+            const nome = fornecedor.nomeFornecedor || ' ';
+            const cpf = fornecedor.cpf || ' ';
+            const rg = fornecedor.rg || ' ';
+            const dataNascimento = fornecedor.dataNascimento || ' ';
+
+            const isDeletando = deletandoId === fornecedor.id;
+
+            return (
+              <tr key={fornecedor.id}>
+                <td>{fornecedor.id}</td>
+                <td>{nome}</td>
+                <td>{fornecedor.cnpj}</td>
+                <td>{cpf}</td>
+                <td>{fornecedor.email}</td>
+                <td>{rg}</td>
+                <td>{dataNascimento}</td>
+                <td>
+                  {!isDeletando && (
+                    <button
+                      style={{
+                        padding: 5,
+                        lineHeight: 0,
+                      }}
+                      onClick={cancelaDelete}
+                      className="button is-rounded is-small"
+                    >
+                      Empresas
+                    </button>
+                  )}
+                  <br />
+                  {!isDeletando && (
+                    <button
+                      style={{
+                        display: 'block',
+                        padding: 14,
+                        lineHeight: 0,
+                      }}
+                      onClick={(e) => onEdit(fornecedor)}
+                      className="button is-success is-rounded is-small"
+                    >
+                      Editar
+                    </button>
+                  )}
+                  <button
+                    style={{
+                      display: 'block',
+                      padding: 10,
+                      lineHeight: 0,
+                    }}
+                    onClick={(e) => onDeleteClick(fornecedor)}
+                    className="button is-danger is-rounded is-small"
+                  >
+                    {isDeletando ? 'Confirma?' : 'Deletar'}
+                  </button>
+                  {isDeletando && (
+                    <button
+                      style={{
+                        display: 'block',
+                        padding: 10,
+                        lineHeight: 0,
+                      }}
+                      onClick={cancelaDelete}
+                      className="button is-rounded is-small"
+                    >
+                      Cancelar
+                    </button>
+                  )}
+                </td>
+              </tr>
+            );
+          })
         ) : (
           <tr>
-            <td colSpan={5}>Nenhum fornecedor encontrado ...</td>
+            <td colSpan={8}>Nenhum fornecedor encontrado.</td>
           </tr>
         )}
       </tbody>
     </table>
-  );
-};
-
-interface FornecedorRowProps {
-  fornecedor: Fornecedor;
-  onEdit: (fornecedor: Fornecedor) => void;
-  onDelete: (fornecedor: Fornecedor) => void;
-}
-
-const FornecedorRow: React.FC<FornecedorRowProps> = ({ fornecedor, onEdit, onDelete }) => {
-  const [deletando, setDeletando] = useState<boolean>(false);
-
-  const onDeleteClick = (fornecedor: Fornecedor) => {
-    if (deletando) {
-      onDelete(fornecedor);
-      setDeletando(false);
-    } else {
-      setDeletando(true);
-    }
-  };
-
-  const cancelaDelete = () => setDeletando(false);
-
-  return (
-    <tr>
-      <td>{fornecedor.id}</td>
-      <td>{fornecedor.nomeFornecedor}</td>
-      <td>{fornecedor.cnpj}</td>
-      <td>{fornecedor.cpf}</td>
-      <td>{fornecedor.email}</td>
-      <td>
-        {!deletando && (
-          <button onClick={(e) => onEdit(fornecedor)} className="button is-success is-rounded is-small">
-            Editar
-          </button>
-        )}
-
-        <button onClick={(e) => onDeleteClick(fornecedor)} className="button is-danger is-rounded is-small">
-          {deletando ? 'Confirma?' : 'Deletar'}
-        </button>
-
-        {deletando && (
-          <button onClick={cancelaDelete} className="button is-rounded is-small">
-            Cancelar
-          </button>
-        )}
-      </td>
-    </tr>
   );
 };

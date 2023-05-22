@@ -18,12 +18,13 @@ export const ListagemFornecedores: React.FC = () => {
     (url) => httpClient.get(url)
   );
 
-  const [lista, setLista] = useState<Fornecedor[]>([]);
+  const [listaFornecedores, setListaFornecedores] = useState<Fornecedor[]>([]);
+
   const [filtroNome, setFiltroNome] = useState<string>('');
-  const [filtroCPF, setFiltroCPF] = useState<string>('');
+  const [filtroCpf, setFiltroCPF] = useState<string>('');
 
   useEffect(() => {
-    setLista(result?.data || []);
+    setListaFornecedores(result?.data || []);
   }, [result]);
 
   useEffect(() => {
@@ -43,15 +44,18 @@ export const ListagemFornecedores: React.FC = () => {
     });
   };
 
-  const filtrarFornecedores = (fornecedores: Fornecedor[]) => {
+  const filtrarFornecedoresCpf = (fornecedores: Fornecedor[]) => {
     return fornecedores.filter((fornecedor) => {
       const nomeMatch = fornecedor.nomeFornecedor?.toLowerCase().includes(filtroNome.toLowerCase()) ?? false;
-      const cpfMatch = fornecedor.cpf?.includes(filtroCPF) ?? false;
+      const cpfMatch = filtroCpf ? fornecedor.cpf?.toLowerCase().includes(filtroCpf.toLowerCase()) : true;
       return nomeMatch && cpfMatch;
     });
   };
   
-  const fornecedoresFiltrados = filtrarFornecedores(lista);
+  
+  
+  
+  const fornecedoresFiltrados = filtrarFornecedoresCpf(listaFornecedores);
 
   return (
     <Layout titulo="Listagem de Fornecedores" mensagens={messages}>
@@ -75,7 +79,7 @@ export const ListagemFornecedores: React.FC = () => {
             className="input"
             type="text"
             placeholder="Buscar por CPF"
-            value={filtroCPF}
+            value={filtroCpf}
             onChange={(e) => setFiltroCPF(e.target.value)}
           />
         </p>

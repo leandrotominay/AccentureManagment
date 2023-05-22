@@ -4,5 +4,8 @@ export interface Fornecedor {
     cnpj?: string;
     cpf?: string;
     email?: string;
+    rg?: string;
+    dataNascimento?: string;
+    
 
 }
