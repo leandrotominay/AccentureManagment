@@ -5,7 +5,7 @@ export interface Fornecedor {
     cpf?: string;
     email?: string;
     rg?: string;
-    dataNascimento?: string;
+    data_Nascimento?: string;
     empresaId?: number; 
   }
   

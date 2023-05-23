@@ -13,7 +13,7 @@ const validationSchema = yup.object().shape({
   cnpj: yup.string().trim().nullable(),
   email: yup.string().trim().nullable(),
   rg: yup.string().trim().nullable(),
-  dataNascimento: yup.string().trim().nullable(),
+  data_Nascimento: yup.string().trim().nullable(),
 });
 
 interface FormErros {
@@ -23,7 +23,7 @@ interface FormErros {
   cep?: string;
   email?: string;
   rg?: string;
-  dataNascimento?: string;
+  data_Nascimento?: string;
 }
 
 export const CadastroFornecedores: React.FC = () => {
@@ -33,7 +33,7 @@ export const CadastroFornecedores: React.FC = () => {
   const [cnpj, setCnpj] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [rg, setRg] = useState<string>('');
-  const [dataNascimento, setDataNascimento] = useState<string>('');
+  const [data_Nascimento, setData_Nascimento] = useState<string>('');
   const [id, setId] = useState<number>();
   const [messages, setMessages] = useState<Array<Alert>>([]);
   const [errors, setErrors] = useState<FormErros>({});
@@ -62,8 +62,8 @@ export const CadastroFornecedores: React.FC = () => {
         if (fornecedorEncontrado.rg !== undefined) {
           setRg(fornecedorEncontrado.rg);
         }
-        if (fornecedorEncontrado.dataNascimento !== undefined) {
-          setDataNascimento(fornecedorEncontrado.dataNascimento);
+        if (fornecedorEncontrado.data_Nascimento !== undefined) {
+          setData_Nascimento(fornecedorEncontrado.data_Nascimento);
         }
       });
     }
@@ -77,7 +77,7 @@ export const CadastroFornecedores: React.FC = () => {
       cpf,
       email,
       rg,
-      dataNascimento,
+      data_Nascimento
     };
 
     validationSchema
@@ -104,7 +104,7 @@ export const CadastroFornecedores: React.FC = () => {
               if (error.response && error.response.status === 500) {
                 setCnpjError('Erro interno do servidor. Por favor, tente novamente mais tarde.');
                 setMessages([
-                    { tipo: 'danger', texto: 'Campos duplicados! verifique os dados e tente novamente' },
+                    { tipo: 'danger', texto: 'Verifique os campos novamentes, campos nulos ou duplicados.' },
                   ])
               } else {
                 console.log(error);
@@ -174,11 +174,11 @@ export const CadastroFornecedores: React.FC = () => {
           mascara="data"
           label="Data de Nascimento: "
           columnClasses="is-half"
-          onChange={setDataNascimento}
-          value={dataNascimento}
+          onChange={setData_Nascimento}
+          value={data_Nascimento}
           id="inputDataNascimento"
           placeholder="xx/xx/xxxx"
-          error={errors.dataNascimento}
+          error={errors.data_Nascimento}
         />
       </div>
 
@@ -209,7 +209,7 @@ export const CadastroFornecedores: React.FC = () => {
           label="Empresa: "
           columnClasses="is-half"
           onChange={setRg}
-          value={rg} //empresa id //
+          value={rg} // DROPDOWN id //
           id="inputRg"
           placeholder="Digite a empresa Relacionada"
           error={errors.rg}

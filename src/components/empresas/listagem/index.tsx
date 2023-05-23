@@ -53,7 +53,7 @@ export const ListagemEmpresas: React.FC = () => {
   return (
     <Layout titulo="Listagem de Empresas" mensagens={messages}>
       <Link href="/cadastros/empresas">
-      <button className="button is-primary" style={{ backgroundColor: 'purple', color: 'white' }}>Novo</button>
+        <button className="button is-primary" style={{ backgroundColor: 'purple', color: 'white' }}>Novo</button>
       </Link>
       <br />
       <br />
@@ -79,8 +79,8 @@ export const ListagemEmpresas: React.FC = () => {
           {Array.from(Array(totalPaginas).keys()).map((pagina) => (
             <li key={pagina}>
               <button
-              style={{ backgroundColor: 'purple', color: 'white' }}
-                className={`pagination-link ${pagina + 1 === paginaAtual ? 'is-current' : ''}` }
+                style={{ backgroundColor: 'purple', color: 'white' }}
+                className={`pagination-link ${pagina + 1 === paginaAtual ? 'is-current' : ''}`}
                 onClick={() => trocarPagina(pagina + 1)}
               >
                 {pagina + 1}

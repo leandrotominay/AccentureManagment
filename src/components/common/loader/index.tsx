@@ -3,9 +3,9 @@ interface LoaderProps {
     show: boolean;
 }
 
-export const Loader: React.FC<LoaderProps> = ({ show}) => {
-    if(!show){
-        return<></>
+export const Loader: React.FC<LoaderProps> = ({ show }) => {
+    if (!show) {
+        return <></>
     }
     return (
         <div id="loader" style={{
@@ -22,9 +22,9 @@ export const Loader: React.FC<LoaderProps> = ({ show}) => {
                 left: '25%',
                 top: '10%'
             }}>
-<div className="loadingio-spinner-rolling-am5ajrs83eb"><div className="ldio-6z169f2xp9">
-<div></div>
-</div></div>
+                <div className="loadingio-spinner-rolling-am5ajrs83eb"><div className="ldio-6z169f2xp9">
+                    <div></div>
+                </div></div>
 
             </div>
 

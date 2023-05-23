@@ -59,7 +59,7 @@ export const TabelaFornecedores: React.FC<TabelaFornecedorProps> = ({
               const nome = fornecedor.nomeFornecedor || ' ';
               const cpf = fornecedor.cpf || ' ';
               const rg = fornecedor.rg || ' ';
-              const dataNascimento = fornecedor.dataNascimento || ' ';
+              const data_Nascimento = fornecedor.data_Nascimento || ' ';
 
               const isDeletando = deletandoId === fornecedor.id;
 
@@ -70,8 +70,8 @@ export const TabelaFornecedores: React.FC<TabelaFornecedorProps> = ({
                   <td>{fornecedor.cnpj}</td>
                   <td>{cpf}</td>
                   <td>{fornecedor.email}</td>
-                  <td>{rg}</td>
-                  <td>{dataNascimento}</td>
+                  <td>{fornecedor.rg}</td>
+                  <td>{fornecedor.data_Nascimento}</td>
                   <td>
                     {!isDeletando && (
                       <>

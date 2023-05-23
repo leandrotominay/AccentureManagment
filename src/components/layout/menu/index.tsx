@@ -1,4 +1,4 @@
-import { FaHome, FaBuilding, FaUserFriends, FaSignOutAlt } from 'react-icons/fa';
+import { FaHome, FaBuilding, FaUserFriends, FaSignOutAlt, FaAccessibleIcon } from 'react-icons/fa';
 import Link from 'next/link';
 
 export const Menu: React.FC = () => {
@@ -11,6 +11,7 @@ export const Menu: React.FC = () => {
         <MenuItem href="/" aria-haspopup="true" aria-controls="dropdown-menu4" label="Home" icon={<FaHome />} />
         <MenuItem href="/consultas/empresas" label="Empresas" icon={<FaBuilding />} />
         <MenuItem href="/consultas/fornecedores" label="Fornecedores" icon={<FaUserFriends />} />
+        <MenuItem href="/sair" label="Sair" icon={<FaSignOutAlt />} />
 
       </ul>
     </aside>

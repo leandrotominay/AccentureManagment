@@ -1,14 +1,17 @@
 import { Empresa } from 'app/models/empresas'
+import { FornecedorEmpresa } from 'app/models/fornecedor_empresa';
 import { useState } from 'react'
 
 interface TabelaEmpresaProps {
   empresas: Array<Empresa>;
+  fornecedoresEmpresas?: Array<FornecedorEmpresa>;
   onEdit: (empresa: Empresa) => void;
   onDelete: (empresa: Empresa) => void;
 }
 
 export const TabelaEmpresas: React.FC<TabelaEmpresaProps> = ({
   empresas,
+  fornecedoresEmpresas,
   onDelete,
   onEdit
 }) => {
@@ -95,6 +98,7 @@ export const TabelaEmpresas: React.FC<TabelaEmpresaProps> = ({
 
 interface EmpresaRowProps {
   empresa: Empresa;
+  fornecedorEmpresa?: FornecedorEmpresa;
   onEdit: (empresa: Empresa) => void;
   onDelete: (empresa: Empresa) => void;
   onDialogOpen: (empresa: Empresa) => void;
@@ -102,11 +106,13 @@ interface EmpresaRowProps {
 
 const EmpresaRow: React.FC<EmpresaRowProps> = ({
   empresa,
+  fornecedorEmpresa,
   onDelete,
   onEdit,
   onDialogOpen
 }) => {
   const [deletando, setDeletando] = useState<boolean>(false);
+  const [fk, setFk] = useState<boolean>(false);
 
   const onDeleteClick = (empresa: Empresa) => {
     if (deletando) {
@@ -125,6 +131,9 @@ const EmpresaRow: React.FC<EmpresaRowProps> = ({
       <td>{empresa.nomeFantasia}</td>
       <td>{empresa.cnpj}</td>
       <td>{empresa.cep}</td>
+      {fk &&
+      <td>{fornecedorEmpresa?.fornecedor_id_fk}</td>
+      }
       <td>
         {!deletando && (
           <button
