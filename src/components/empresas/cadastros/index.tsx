@@ -5,7 +5,9 @@ import { Empresa } from 'app/models/empresas'
 import { Alert } from 'components/common/message'
 import * as yup from 'yup'
 import Link from 'next/link'
+import InputMask from 'react-input-mask' // Adicionado o import do react-input-mask
 import { useRouter } from 'next/router'
+
 
 const validationSchema = yup.object().shape({
     nomeFantasia: yup.string().trim().required("Campo Obrigatório"),
@@ -35,7 +37,7 @@ export const CadastroEmpresas: React.FC = () => {
     const handleInputChange = async (e) => {
         const value = e.target.value;
         setCep(value);
-
+    
         try {
             const response = await fetch(`http://cep.la/${value}`, {
                 headers: { 'Accept': 'application/json' }
@@ -68,44 +70,52 @@ export const CadastroEmpresas: React.FC = () => {
       
       
 
-    const submit = () => {
+      const submit = () => {
         const empresa: Empresa = {
-            id,
-            nomeFantasia,
-            cnpj,
-            cep
-
+          id,
+          nomeFantasia,
+          cnpj,
+          cep
         }
-
-        validationSchema.validate(empresa).then(obj => {
-            setErrors({})
+      
+        validationSchema
+          .validate(empresa)
+          .then(obj => {
             if (id) {
-                service
-                    .atualizar(empresa)
-                    .then(response => setMessages([{
-                        tipo: "success", texto: "Produto atualizado com sucesso!"
-                    }]))
+              service
+                .atualizar(empresa)
+                .then(response => setMessages([{ tipo: "success", texto: "empresa atualizado com sucesso!" }]))
+                .catch(error => {
+
+                  setMessages([{ tipo: "danger", texto: "Erro ao atualizar o fornecedor, campo CNPJ duplicado." }]);
+                });
             } else {
+              service
+                .salvar(empresa)
+                .then(empresaResposta => {
+                  setId(empresaResposta.id);
+                  setMessages([{ tipo: "success", texto: "Fornecedor salvo com sucesso!" }]);
+                })
+                .catch(error => {
+                  if (error.response && error.response.status === 500) {
+                    const responseData = error.response.data;
 
-                service
-                    .salvar(empresa)
-                    .then(empresaResposta => {
-                        setId(empresaResposta.id)
-                        setMessages([{
-                            tipo: "success", texto: "Produto salvo com sucesso!"
-                        }])
-                    })
+                  } else {
+                    setErrors({ ...empresa }); // Limpar erros anteriores
+                  }
+                  setMessages([{ tipo: "danger", texto: "Erro ao salvar o fornecedor, campo CNPJ duplicado." }]);
+                });
             }
-
-        }).catch(err => {
+          })
+          .catch(err => {
             const field = err.path;
             const message = err.message;
             setErrors({
-                [field]: message
-            })
-        })
-
-    }
+              ...empresa,
+              [field]: message
+            });
+          });
+      }
 
     return (
         <Layout titulo="Empresas" mensagens={messages}>
@@ -131,24 +141,33 @@ export const CadastroEmpresas: React.FC = () => {
                     placeholder="Digite o Nome da Empresa"
                     error={errors.nomeFantasia}
                 />
-
-                <Input label="CNPJ: "
+                
+                <Input mascara="cnpj" label="CNPJ: "
                     columnClasses="is-half"
                     onChange={setCnpj}
                     value={cnpj}
                     id="inputCnpj"
                     placeholder="Digite o CNPJ da Empresa"
                     error={errors.cnpj}
+                    
                 />
+
             </div>
             <hr></hr>
             <div className="field">
                 <label className="label">CEP</label>
                 <div className="control">
-                    <input className="input" id="inputCEP" type="text" value={cep} onChange={event => setCep(event.target.value)} onInput={handleInputChange} placeholder="Digite o CEP" />
-                {errors.cep &&
-                    <p className="help is-danger">{errors.cep}</p>
-                }
+                <InputMask
+    className="input"
+    id="inputCEP"
+    mask="99999-999"
+    value={cep}
+    onChange={handleInputChange}
+    placeholder="Digite o CEP"
+/>
+                    {errors.cep &&
+                        <p className="help is-danger">{errors.cep}</p>
+                    }
                 </div>
             </div>
             {data && (
@@ -161,7 +180,7 @@ export const CadastroEmpresas: React.FC = () => {
                     <input type="text" className="input" value={data.cidade} readOnly />
                     <label className="label">Estado</label>
                     <input type="text" className="input" value={data.uf} readOnly />
-                </div>
+                </div> // criar no banco esses campos -------------==^
             )}
             <br />
             <div className="field is-grouped">
@@ -180,4 +199,3 @@ export const CadastroEmpresas: React.FC = () => {
         </Layout>
     )
 }
-

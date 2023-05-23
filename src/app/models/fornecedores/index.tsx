@@ -6,6 +6,6 @@ export interface Fornecedor {
     email?: string;
     rg?: string;
     dataNascimento?: string;
-    
-
-}
+    empresaId?: number; 
+  }
+  

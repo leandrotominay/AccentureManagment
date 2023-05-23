@@ -11,11 +11,13 @@ export const Menu: React.FC = () => {
         <MenuItem href="/" aria-haspopup="true" aria-controls="dropdown-menu4" label="Home" icon={<FaHome />} />
         <MenuItem href="/consultas/empresas" label="Empresas" icon={<FaBuilding />} />
         <MenuItem href="/consultas/fornecedores" label="Fornecedores" icon={<FaUserFriends />} />
-        <MenuItem href="/" label="Sair" icon={<FaSignOutAlt />} />
+
       </ul>
     </aside>
   );
 };
+
+
 
 interface MenuItemProps {
   href: string;

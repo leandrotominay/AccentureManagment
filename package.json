@@ -13,11 +13,13 @@
     "bulma": "^0.9.4",
     "formik": "^2.2.9",
     "next": "13.4.3",
+    "primereact": "^9.4.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.43.9",
     "react-icons": "^4.8.0",
     "react-image": "^4.1.0",
+    "react-input-mask": "^2.0.4",
     "swr": "^2.1.5",
     "yup": "^1.1.1"
   },

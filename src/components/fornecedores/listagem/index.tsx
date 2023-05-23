@@ -10,7 +10,9 @@ import Router from 'next/router';
 import { useFornecedorService } from 'app/services';
 import { Alert } from 'components/common/message';
 
+
 export const ListagemFornecedores: React.FC = () => {
+  const PAGE_SIZE = 5; // Número de itens por página
   const service = useFornecedorService();
   const [messages, setMessages] = useState<Array<Alert>>([]);
   const { data: result, error, mutate } = useSWR<AxiosResponse<Fornecedor[]>>(
@@ -19,6 +21,7 @@ export const ListagemFornecedores: React.FC = () => {
   );
 
   const [listaFornecedores, setListaFornecedores] = useState<Fornecedor[]>([]);
+  const [paginaAtual, setPaginaAtual] = useState(1);
 
   const [filtroNome, setFiltroNome] = useState<string>('');
   const [filtroCpf, setFiltroCPF] = useState<string>('');
@@ -51,16 +54,23 @@ export const ListagemFornecedores: React.FC = () => {
       return nomeMatch && cpfMatch;
     });
   };
-  
-  
-  
-  
+
   const fornecedoresFiltrados = filtrarFornecedoresCpf(listaFornecedores);
+
+  // Paginação
+  const totalPaginas = Math.ceil(fornecedoresFiltrados.length / PAGE_SIZE);
+  const indiceInicio = (paginaAtual - 1) * PAGE_SIZE;
+  const indiceFim = indiceInicio + PAGE_SIZE;
+  const fornecedoresPaginados = fornecedoresFiltrados.slice(indiceInicio, indiceFim);
+
+  const trocarPagina = (pagina: number) => {
+    setPaginaAtual(pagina);
+  };
 
   return (
     <Layout titulo="Listagem de Fornecedores" mensagens={messages}>
       <Link href="/cadastros/fornecedores">
-        <button className="button is-warning">Novo</button>
+        <button className="button is-primary" style={{ backgroundColor: 'purple', color: 'white' }}>Novo</button>
       </Link>
       <br />
       <br />
@@ -86,7 +96,37 @@ export const ListagemFornecedores: React.FC = () => {
       </div>
 
       <Loader show={!result} />
-      <TabelaFornecedores onEdit={editar} onDelete={deletar} fornecedores={fornecedoresFiltrados} />
+      <TabelaFornecedores onEdit={editar} onDelete={deletar} fornecedores={fornecedoresPaginados} />
+
+      <nav className="pagination is-rounded" role="navigation" aria-label="pagination" >
+        <button
+          className="pagination-previous"
+          onClick={() => trocarPagina(paginaAtual - 1)}
+          disabled={paginaAtual === 1}
+        >
+          Anterior
+        </button>
+        <button
+          className="pagination-next"
+          onClick={() => trocarPagina(paginaAtual + 1)}
+          disabled={paginaAtual === totalPaginas}
+        >
+          Próxima
+        </button>
+        <ul className="pagination-list" >
+          {Array.from(Array(totalPaginas).keys()).map((pagina) => (
+            <li key={pagina}>
+              <button
+                className={`pagination-link ${pagina + 1 === paginaAtual ? 'is-current' : ''}`}
+                onClick={() => trocarPagina(pagina + 1)}
+                style={{ backgroundColor: 'purple', color: 'white' }}
+              >
+                {pagina + 1}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </nav>
     </Layout>
   );
 };

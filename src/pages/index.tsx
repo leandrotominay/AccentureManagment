@@ -4,6 +4,7 @@ import { Layout } from 'components'
 const Home: React.FC = () => {
   return (
     <div>
+      
       <Head>
         <title>Accenture Managment</title>
         <meta name="description" content="Gerenciamento de Empresas e Fornecedores" />
@@ -11,7 +12,8 @@ const Home: React.FC = () => {
 
       </Head>
 
-      <Layout> </Layout>
+      <Layout>
+         </Layout>
 
     </div>
   )
