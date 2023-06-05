@@ -11,7 +11,7 @@ Essa é uma aplicação [Next.js](https://nextjs.org/)
 
 Após extrair os arquivos, de os seguintes comandos dentro da pasta em algum terminal:
 
-Feito isso você terá 2 projetos: "vendas-api" (backend - Spring Boot) e "vendas-app" (frontend - NextJS)
+Feito isso você terá 2 projetos: "AccentureManagmentSpring" (backend - Spring Boot) e "AccentureManagment" (frontend - NextJS)
 
 Para rodar os projetos:
 
