@@ -1,0 +1,28 @@
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Cor de fundo semi-transparente */
+    z-index: 9999; /* Certifique-se de que a camada esteja acima dos outros elementos */
+  }
+  
+  .custom-dialog {
+    z-index: 10000; /* Certifique-se de que o pop-up esteja acima da camada de fundo escuro */
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  
+  .popup-content {
+    padding: 20px;
+    background-color: #fff; /* Cor de fundo da caixa de diálogo */
+  }
+  
+  .popup-title {
+    margin-top: 0;
+  }
+  
