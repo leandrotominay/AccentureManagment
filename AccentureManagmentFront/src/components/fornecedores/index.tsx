@@ -1,1 +1,0 @@
-export { CadastroFornecedores } from './cadastros'
